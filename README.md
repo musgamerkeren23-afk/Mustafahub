@@ -1,1 +1,1 @@
-# Mustafahub
+# Mustafa hub scripts
