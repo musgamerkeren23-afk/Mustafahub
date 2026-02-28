@@ -32,7 +32,6 @@ local function Notify(title, text)
     end)
 end
 
--- GUI
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MustafaHub"
 ScreenGui.ResetOnSpawn = false
@@ -41,7 +40,6 @@ ScreenGui.IgnoreGuiInset = true
 pcall(function() ScreenGui.Parent = game.CoreGui end)
 if not ScreenGui.Parent then ScreenGui.Parent = LocalPlayer.PlayerGui end
 
--- Window
 local Window = Instance.new("Frame", ScreenGui)
 Window.Size = UDim2.new(0, 560, 0, 380)
 Window.Position = UDim2.new(0.5, -280, 0.5, -190)
@@ -54,7 +52,6 @@ local WinStroke = Instance.new("UIStroke", Window)
 WinStroke.Color = Color3.fromRGB(60, 60, 100)
 WinStroke.Thickness = 1.2
 
--- Top Bar
 local TopBar = Instance.new("Frame", Window)
 TopBar.Size = UDim2.new(1, 0, 0, 36)
 TopBar.BackgroundColor3 = Color3.fromRGB(10, 10, 15)
@@ -96,7 +93,6 @@ end
 local CloseBtn = MakeTopBtn(-12, Color3.fromRGB(255,60,60), "✕")
 local MinBtn   = MakeTopBtn(-36, Color3.fromRGB(255,180,0), "−")
 
--- Sidebar
 local Sidebar = Instance.new("Frame", Window)
 Sidebar.Size = UDim2.new(0, 145, 1, -36)
 Sidebar.Position = UDim2.new(0, 0, 0, 36)
@@ -113,7 +109,6 @@ SidePad.PaddingTop = UDim.new(0, 10)
 SidePad.PaddingLeft = UDim.new(0, 8)
 SidePad.PaddingRight = UDim.new(0, 8)
 
--- Content
 local Content = Instance.new("Frame", Window)
 Content.Size = UDim2.new(1, -153, 1, -44)
 Content.Position = UDim2.new(0, 149, 0, 40)
@@ -378,7 +373,7 @@ local function ActionRow(page, icon, title, subtitle, color, callback)
     end)
 end
 
--- SIDEBAR SETUP
+-- SIDEBAR
 SideLabel("  MAIN")
 SideBtn("🏠", "Home", "Home")
 SideBtn("🚶", "Movement", "Movement")
@@ -390,7 +385,6 @@ SideBtn("ℹ️", "About", "About")
 -- HOME PAGE
 local HomePage = NewPage("Home")
 SectionHeader(HomePage, "  WELCOME")
-
 local WelcomeBox = Instance.new("Frame", HomePage)
 WelcomeBox.Size = UDim2.new(1, 0, 0, 75)
 WelcomeBox.BackgroundColor3 = Color3.fromRGB(20,20,40)
@@ -398,12 +392,10 @@ WelcomeBox.BackgroundTransparency = 0.2
 Instance.new("UICorner", WelcomeBox).CornerRadius = UDim.new(0,10)
 local WStroke = Instance.new("UIStroke", WelcomeBox)
 WStroke.Color = Color3.fromRGB(80,80,200) WStroke.Thickness = 1 WStroke.Transparency = 0.5
-
 local WIcon = Instance.new("TextLabel", WelcomeBox)
 WIcon.Size = UDim2.new(0,50,1,0) WIcon.Position = UDim2.new(0,10,0,0)
 WIcon.BackgroundTransparency = 1 WIcon.Text = "🌙" WIcon.TextSize = 30
 WIcon.Font = Enum.Font.GothamBold WIcon.TextColor3 = Color3.fromRGB(200,200,255)
-
 local WText = Instance.new("TextLabel", WelcomeBox)
 WText.Size = UDim2.new(1,-70,1,0) WText.Position = UDim2.new(0,65,0,0)
 WText.BackgroundTransparency = 1
@@ -559,22 +551,28 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- MOBILE FLY BUTTONS
+-- MOBILE FLY BUTTONS (FIX - pojok kiri, kecil, tidak ngalangin tombol Roblox)
 if IsMobile then
     local MF = Instance.new("Frame", ScreenGui)
-    MF.Size = UDim2.new(0,120,0,65) MF.Position = UDim2.new(1,-135,1,-85)
-    MF.BackgroundColor3 = Color3.fromRGB(13,13,20) MF.BackgroundTransparency = 0.3
-    Instance.new("UICorner", MF).CornerRadius = UDim.new(0,10)
+    MF.Size = UDim2.new(0, 90, 0, 44)
+    MF.Position = UDim2.new(0, 8, 0.6, 0)
+    MF.BackgroundColor3 = Color3.fromRGB(13,13,20)
+    MF.BackgroundTransparency = 0.4
+    Instance.new("UICorner", MF).CornerRadius = UDim.new(0, 8)
     local MU = Instance.new("TextButton", MF)
-    MU.Size = UDim2.new(0.48,0,1,-8) MU.Position = UDim2.new(0,4,0,4)
-    MU.BackgroundColor3 = Color3.fromRGB(60,60,180) MU.Text = "▲"
-    MU.Font = Enum.Font.GothamBold MU.TextSize = 18 MU.TextColor3 = Color3.fromRGB(255,255,255)
-    Instance.new("UICorner", MU).CornerRadius = UDim.new(0,8)
+    MU.Size = UDim2.new(0.48, 0, 1, -6)
+    MU.Position = UDim2.new(0, 3, 0, 3)
+    MU.BackgroundColor3 = Color3.fromRGB(60,60,180)
+    MU.Text = "▲" MU.Font = Enum.Font.GothamBold
+    MU.TextSize = 14 MU.TextColor3 = Color3.fromRGB(255,255,255)
+    Instance.new("UICorner", MU).CornerRadius = UDim.new(0, 6)
     local MD = Instance.new("TextButton", MF)
-    MD.Size = UDim2.new(0.48,0,1,-8) MD.Position = UDim2.new(0.52,0,0,4)
-    MD.BackgroundColor3 = Color3.fromRGB(180,60,60) MD.Text = "▼"
-    MD.Font = Enum.Font.GothamBold MD.TextSize = 18 MD.TextColor3 = Color3.fromRGB(255,255,255)
-    Instance.new("UICorner", MD).CornerRadius = UDim.new(0,8)
+    MD.Size = UDim2.new(0.48, 0, 1, -6)
+    MD.Position = UDim2.new(0.52, 0, 0, 3)
+    MD.BackgroundColor3 = Color3.fromRGB(180,60,60)
+    MD.Text = "▼" MD.Font = Enum.Font.GothamBold
+    MD.TextSize = 14 MD.TextColor3 = Color3.fromRGB(255,255,255)
+    Instance.new("UICorner", MD).CornerRadius = UDim.new(0, 6)
     MU.MouseButton1Down:Connect(function() MobileUpHeld = true end)
     MU.MouseButton1Up:Connect(function() MobileUpHeld = false end)
     MD.MouseButton1Down:Connect(function() MobileDownHeld = true end)
@@ -594,7 +592,6 @@ OpenBtn.MouseButton1Click:Connect(function()
     Window.Visible = true OpenBtn.Visible = false
 end)
 
--- CLOSE & MINIMIZE
 CloseBtn.MouseButton1Click:Connect(function()
     Window.Visible = false OpenBtn.Visible = true
 end)
@@ -620,7 +617,6 @@ UserInputService.InputBegan:Connect(function(input)
     end
 end)
 
--- DEFAULT PAGE
 Pages["Home"].Visible = true
 CurrentPage = "Home"
 if SideBtns["Home"] then SideBtns["Home"](true) end
