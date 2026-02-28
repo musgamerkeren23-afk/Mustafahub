@@ -404,7 +404,7 @@ WText.Font = Enum.Font.GothamSemibold WText.TextSize = 12
 WText.TextColor3 = Color3.fromRGB(200,200,230) WText.TextXAlignment = Enum.TextXAlignment.Left
 
 SectionHeader(HomePage, "  QUICK TOGGLE")
-ToggleRow(HomePage, "🛸", "Fly", "WASD+Space | Mobile Btn", Color3.fromRGB(100,100,255), function(v)
+ToggleRow(HomePage, "🛸", "Fly", "Joystick gerak | Btn UP/DN naik turun", Color3.fromRGB(100,100,255), function(v)
     States.Fly = v
     if v then
         local hrp = GetHRP() if not hrp then return end
@@ -425,7 +425,7 @@ end)
 -- MOVEMENT PAGE
 local MovePage = NewPage("Movement")
 SectionHeader(MovePage, "  MOVEMENT")
-ToggleRow(MovePage, "🛸", "Fly", "WASD+Space/Shift | Mobile UP/DN | Controller LS", Color3.fromRGB(100,100,255), function(v)
+ToggleRow(MovePage, "🛸", "Fly", "Joystick gerak | Btn UP/DN naik turun", Color3.fromRGB(100,100,255), function(v)
     States.Fly = v
     if v then
         local hrp = GetHRP() if not hrp then return end
@@ -514,6 +514,8 @@ RunService.RenderStepped:Connect(function()
     if States.Fly and BodyVelocity and BodyGyro then
         local Camera = workspace.CurrentCamera
         local Move = Vector3.zero
+
+        -- PC
         if IsPC then
             if UserInputService:IsKeyDown(Enum.KeyCode.W) then Move += Camera.CFrame.LookVector end
             if UserInputService:IsKeyDown(Enum.KeyCode.S) then Move -= Camera.CFrame.LookVector end
@@ -522,6 +524,19 @@ RunService.RenderStepped:Connect(function()
             if UserInputService:IsKeyDown(Enum.KeyCode.Space) then Move += Vector3.new(0,1,0) end
             if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then Move -= Vector3.new(0,1,0) end
         end
+
+        -- Mobile: ikut joystick Roblox bawaan
+        if IsMobile then
+            local hum = GetHum()
+            if hum then
+                local MoveDir = hum.MoveDirection
+                if MoveDir.Magnitude > 0 then
+                    Move = MoveDir
+                end
+            end
+        end
+
+        -- Controller
         local GP = UserInputService:GetConnectedGamepads()
         if #GP > 0 then
             for _, axis in pairs(UserInputService:GetGamepadState(GP[1])) do
@@ -533,8 +548,11 @@ RunService.RenderStepped:Connect(function()
             if UserInputService:IsGamepadButtonDown(GP[1], Enum.KeyCode.ButtonA) then Move += Vector3.new(0,1,0) end
             if UserInputService:IsGamepadButtonDown(GP[1], Enum.KeyCode.ButtonB) then Move -= Vector3.new(0,1,0) end
         end
+
+        -- Tombol UP/DOWN mobile
         if MobileUpHeld then Move += Vector3.new(0,1,0) end
         if MobileDownHeld then Move -= Vector3.new(0,1,0) end
+
         BodyVelocity.Velocity = Move * 60
         BodyGyro.CFrame = Camera.CFrame
     end
@@ -551,7 +569,7 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- MOBILE FLY BUTTONS (FIX - pojok kiri, kecil, tidak ngalangin tombol Roblox)
+-- MOBILE FLY BUTTONS (kecil, pojok kiri, tidak ngalangin tombol Roblox)
 if IsMobile then
     local MF = Instance.new("Frame", ScreenGui)
     MF.Size = UDim2.new(0, 90, 0, 44)
